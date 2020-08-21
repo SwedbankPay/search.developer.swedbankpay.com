@@ -9,7 +9,13 @@ router.get('/:?', asyncHandler(async (req, res, next) => {
   if (query == null || query.length == 0) {
     query = "developer portal"
   }
-  query += "~2"
+  var query_splitted = query.split(' ')
+
+  var final_query = ""
+  // This adds a ~2 after each word to support fuzzy seach
+  query_splitted.forEach((value) => {
+    final_query += `${value}~2 `
+  })
   const { body } = await client.search({
     index: 'developer-*',
     body: {
@@ -17,7 +23,7 @@ router.get('/:?', asyncHandler(async (req, res, next) => {
         simple_query_string: {
           default_operator: "AND",
           fields: ["text"],
-          query: query
+          query: final_query
         }
       }
     }
