@@ -9,11 +9,16 @@ router.get('/:?', asyncHandler(async (req, res, next) => {
   if (query == null || query.length == 0) {
     query = "developer portal"
   }
+  query += "~2"
   const { body } = await client.search({
     index: 'developer-*',
     body: {
       query: {
-        match_phrase: { quote: query }
+        simple_query_string: {
+          default_operator: "AND",
+          fields: ["text"],
+          query: query
+        }
       }
     }
   })
