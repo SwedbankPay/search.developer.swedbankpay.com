@@ -24,6 +24,11 @@ router.get('/:?', asyncHandler(async (req, res, next) => {
           default_operator: "AND",
           fields: ["text"],
           query: final_query
+        },
+        highlight: {
+          fields: {
+            text: {}
+          }
         }
       }
     }
