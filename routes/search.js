@@ -20,15 +20,15 @@ router.get('/:?', asyncHandler(async (req, res, next) => {
     index: 'developer-*',
     body: {
       query: {
-        simple_query_string: {
-          default_operator: "AND",
-          fields: ["text"],
-          query: final_query
-        },
-        highlight: {
-          fields: {
-            text: {}
-          }
+        query_string: {
+          default_field: "text",
+          query: query_splitted,
+          default_operator: "AND"
+        }
+      },
+      highlight: {
+        fields: {
+          text: {}
         }
       }
     }
