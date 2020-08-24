@@ -11,30 +11,32 @@ router.get('/:?', asyncHandler(async (req, res, next) => {
   }
   var query_splitted = query.split(' ')
 
-  var final_query = ""
-  // This adds a ~2 after each word to support fuzzy seach
-  query_splitted.forEach((value) => {
-    final_query += `${value}~2 `
-  })
+  var final_query = query_splitted.map(x => `${x}~1 `).join('')
   const { body } = await client.search({
     index: 'developer-*',
     body: {
       query: {
         query_string: {
           default_field: "text",
-          query: query_splitted,
+          query: final_query,
           default_operator: "AND"
         }
       },
       highlight: {
         fields: {
-          text: {}
-        }
+          text: { fragment_size: 150, number_of_fragments: 3 }
+        },
+        tags_schema: "styled"
       }
     }
   })
+  var results = body.hits.hits.map(x => {
+    return x.highlight
+  })
 
-  res.send(body)
+  //res.send(results)
+
+  res.send([results, body])
 }));
 
 module.exports = router;
