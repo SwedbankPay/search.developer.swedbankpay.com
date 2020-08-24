@@ -12,6 +12,28 @@ router.get('/', asyncHandler(async (req, res, next) => {
   var query_splitted = query.split(' ')
 
   var final_query = query_splitted.map(x => `${x}~1 `).join('')
+
+  /*
+
+  https://www.elastic.co/guide/en/elasticsearch/reference/current/highlighting.html
+
+  GET /developer-* /_search
+{
+  "query": {
+    "query_string": {
+      "default_field": "text",
+      "query": "reversal~1 ",
+      "default_operator": "AND"
+    }
+  },
+  "highlight" : {
+    "fields" : {
+      "text" : {"fragment_size" : 150, "number_of_fragments" : 3}
+    },
+    "tags_schema": "styled"
+  }
+}
+*/
   const { body } = await client.search({
     index: 'developer-*',
     body: {
