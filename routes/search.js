@@ -3,8 +3,11 @@ var router = Express.Router();
 import {
   Client
 } from '@elastic/elasticsearch';
+
+const elasticUrl = process.env.elasticUrl || 'http://localhost:9200'
+
 const client = new Client({
-  node: 'http://localhost:9200'
+  node: elasticUrl
 })
 import asyncHandler from 'express-async-handler';
 
@@ -42,12 +45,14 @@ router.get('/', asyncHandler(async (req, res, next) => {
     }
   })
   var results = body.hits.hits.map(x => {
-    return x.highlight
+    return {
+      title: x.title,
+      url: x._source.url,
+      highlight: x.highlight
+    }
   })
 
-  //res.send(results)
-
-  res.send([final_query, results, body])
+  res.send(results)
 }));
 
 export default router;
