@@ -118,3 +118,4 @@ dist
 
 bin/*
 bin
+.env

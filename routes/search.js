@@ -1,7 +1,5 @@
-import {
-  Router
-} from 'express';
-var router = Router();
+import Express from 'express';
+var router = Express.Router();
 import {
   Client
 } from '@elastic/elasticsearch';
@@ -9,6 +7,7 @@ const client = new Client({
   node: 'http://localhost:9200'
 })
 import asyncHandler from 'express-async-handler';
+
 
 router.get('/', asyncHandler(async (req, res, next) => {
   var query = req.query + ''; //Force into a string

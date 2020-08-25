@@ -1,31 +1,27 @@
 import createError from 'http-errors';
-import express, {
-  json,
-  urlencoded,
-  static
-} from 'express';
-import {
-  join
-} from 'path';
+import express from 'express';
+import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 
-import indexRouter from './routes/index';
-import searchRouter from './routes/search';
+import indexRouter from './routes/index.js';
+import searchRouter from './routes/search.js';
 
 var app = express();
+var __dirname = path.resolve();
+let port = process.env.port || 3000;
 
 // view engine setup
-app.set('views', join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(logger('dev'));
-app.use(json());
-app.use(urlencoded({
+app.use(express.json());
+app.use(express.urlencoded({
   extended: false
 }));
 app.use(cookieParser());
-app.use(static(join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/search', searchRouter)
@@ -45,5 +41,7 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.listen(port)
 
 export default app;
