@@ -1,8 +1,14 @@
-var express = require('express');
-var router = express.Router();
-const { Client } = require('@elastic/elasticsearch')
-const client = new Client({ node: 'http://localhost:9200' })
-const asyncHandler = require('express-async-handler')
+import {
+  Router
+} from 'express';
+var router = Router();
+import {
+  Client
+} from '@elastic/elasticsearch';
+const client = new Client({
+  node: 'http://localhost:9200'
+})
+import asyncHandler from 'express-async-handler';
 
 router.get('/', asyncHandler(async (req, res, next) => {
   var query = req.query + ''; //Force into a string
@@ -13,28 +19,9 @@ router.get('/', asyncHandler(async (req, res, next) => {
 
   var final_query = query_splitted.map(x => `${x}~1 `).join('')
 
-  /*
-
-  https://www.elastic.co/guide/en/elasticsearch/reference/current/highlighting.html
-
-  GET /developer-* /_search
-{
-  "query": {
-    "query_string": {
-      "default_field": "text",
-      "query": "reversal~1 ",
-      "default_operator": "AND"
-    }
-  },
-  "highlight" : {
-    "fields" : {
-      "text" : {"fragment_size" : 150, "number_of_fragments" : 3}
-    },
-    "tags_schema": "styled"
-  }
-}
-*/
-  const { body } = await client.search({
+  const {
+    body
+  } = await client.search({
     index: 'developer-*',
     body: {
       query: {
@@ -46,7 +33,10 @@ router.get('/', asyncHandler(async (req, res, next) => {
       },
       highlight: {
         fields: {
-          text: { fragment_size: 150, number_of_fragments: 3 }
+          text: {
+            fragment_size: 150,
+            number_of_fragments: 3
+          }
         },
         tags_schema: "styled"
       }
@@ -61,4 +51,4 @@ router.get('/', asyncHandler(async (req, res, next) => {
   res.send([final_query, results, body])
 }));
 
-module.exports = router;
+export default router;
