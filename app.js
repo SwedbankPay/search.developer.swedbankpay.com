@@ -3,6 +3,8 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
+import compression from 'compression'
+import helmet from 'helmet'
 
 import indexRouter from './routes/index.js';
 import searchRouter from './routes/search.js';
@@ -15,6 +17,8 @@ let port = process.env.port || 3000;
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+app.use(helmet());
+app.use(compression())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({
