@@ -17,8 +17,14 @@ router.get('/', asyncHandler(async (req, res, next) => {
   if (query == null || query.length == 0) {
     query = "developer portal"
   }
-  var query_splitted = query.split(' ')
+  var startIndex = req.query.page;
+  if (startIndex == null)
+    startIndex = 0;
+  var querySize = req.query.size;
+  if (querySize == null)
+    querySize = 10;
 
+  var query_splitted = query.trim().split(' ')
   var final_query = query_splitted.map(x => `${x}~1 `).join('')
 
   const {
@@ -26,6 +32,8 @@ router.get('/', asyncHandler(async (req, res, next) => {
   } = await client.search({
     index: 'developer-*',
     body: {
+      from: startIndex,
+      size: querySize,
       query: {
         query_string: {
           default_field: "text",
@@ -44,6 +52,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
       }
     }
   })
+
   var results = body.hits.hits.map(x => {
     return {
       title: x.title,

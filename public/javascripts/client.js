@@ -1,14 +1,17 @@
 var search = document.querySelector('#search');
 var code = document.querySelector('pre');
+var size = document.querySelector('#size')
+var page = document.querySelector('#page')
 
 search.addEventListener('keyup', function () {
   if (search.value == "")
     return;
   var xhr = new XMLHttpRequest;
-  xhr.open('GET', '/search/?query=' + search.value, true);
+  xhr.open('GET', `/search/?q=${encodeURI(search.value)}&size=${size.value}&page=${page.value}`, true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
-      code.textContent = xhr.responseText;
+      var json = JSON.parse(xhr.responseText)
+      code.textContent = JSON.stringify(json, undefined, 2);
     }
   };
   xhr.send();
