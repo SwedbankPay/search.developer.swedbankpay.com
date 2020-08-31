@@ -4,6 +4,7 @@ import {
   Client
 } from '@elastic/elasticsearch';
 
+//const elasticUrl = process.env.elasticUrl || 'http://localhost:9200'
 const elasticUrl = process.env.elasticUrl || 'http://localhost:9200'
 
 const client = new Client({
