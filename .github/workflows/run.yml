@@ -32,3 +32,11 @@ jobs:
       with:
         name: search-client
         path: '**/*'
+
+    - name: 'Deploy to Azure Web App'
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'elk-node-search-proxy-stage'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_6776a173d8544d6eaa1b7273237c9dc3 }}
+        package: .
