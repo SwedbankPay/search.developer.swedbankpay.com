@@ -6,10 +6,6 @@ services:
     container_name: nodejs
     restart: unless-stopped
     env_file: .env
-    environment:
-      - development
-      - DEBUG='app:*'
-      - port=3000
     ports:
       - 3000:3000
     volumes:
