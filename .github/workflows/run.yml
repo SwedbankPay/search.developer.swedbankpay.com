@@ -32,11 +32,6 @@ jobs:
     - name: Check syntax
       run: .github/test/check_syntax.sh
 
-    - uses: actions/upload-artifact@v2
-      with:
-        name: search-client
-        path: '**/*'
-
     - name: 'Deploy to Azure Web App'
       uses: azure/webapps-deploy@v2
       with:
