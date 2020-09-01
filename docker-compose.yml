@@ -10,8 +10,8 @@ services:
       - 3000:3000
     volumes:
       - .:/home/node/app
-      - node_modules:/home/node/app/node_modules
-    command: /home/node/app/node_modules/.bin/nodemon app.js
+      - ./node_modules:/home/node/app/node_modules
+    command: node /home/node/app/app.js
 
 volumes: 
   node_modules:
