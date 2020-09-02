@@ -1,15 +1,13 @@
-import Express from 'express';
+var Express = require('express');
 var router = Express.Router();
-import {
-  Client
-} from '@elastic/elasticsearch';
+var Client = require('@elastic/elasticsearch');
 
 const elasticUrl = process.env.elasticUrl || 'http://localhost:9200'
 
-const client = new Client({
+const client = new Client.Client({
   node: elasticUrl
 })
-import asyncHandler from 'express-async-handler';
+var asyncHandler = require('express-async-handler');
 
 
 router.get('/', asyncHandler(async (req, res, next) => {
@@ -64,4 +62,4 @@ router.get('/', asyncHandler(async (req, res, next) => {
   res.send(results)
 }));
 
-export default router;
+exports.searchRouter = router;

@@ -1,13 +1,13 @@
-import createError from 'http-errors';
-import express from 'express';
-import path from 'path';
-import cookieParser from 'cookie-parser';
-import logger from 'morgan';
-import compression from 'compression'
-import helmet from 'helmet'
+var createError = require('http-errors')
+var express = require('express')
+var path = require('path')
+var cookieParser = require('cookie-parser')
+var logger = require('morgan')
+var compression = require('compression')
+var helmet = require('helmet')
 
-import indexRouter from './routes/index.js';
-import searchRouter from './routes/search.js';
+var indexRouter = require('./routes/index.js')
+var searchRouter = require('./routes/search.js')
 
 var app = express();
 var __dirname = path.resolve();
@@ -27,8 +27,8 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/search', searchRouter)
+app.use('/', indexRouter.indexRouter);
+app.use('/search', searchRouter.searchRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -47,5 +47,3 @@ app.use(function (err, req, res, next) {
 });
 
 app.listen(port)
-
-export default app;

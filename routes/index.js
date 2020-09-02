@@ -1,4 +1,4 @@
-import Express from 'express';
+var Express = require('express');
 var router = Express.Router();
 
 /* GET home page. */
@@ -8,4 +8,4 @@ router.get('/', function (req, res, next) {
   });
 });
 
-export default router;
+exports.indexRouter = router;
