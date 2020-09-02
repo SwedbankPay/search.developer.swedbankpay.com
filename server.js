@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var app = require('../app');
+var app = require('./app');
 var debug = require('debug')('elk-node-search-proxy:server');
 var http = require('http');
 
