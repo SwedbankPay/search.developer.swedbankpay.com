@@ -2,7 +2,7 @@ var Express = require('express');
 var router = Express.Router();
 var Client = require('@elastic/elasticsearch');
 
-const elasticUrl = process.env.elasticUrl || 'http://localhost:9200'
+const elasticUrl = process.env.elasticUrl || 'http://192.168.1.175:9200'
 
 const client = new Client.Client({
   node: elasticUrl
@@ -51,13 +51,16 @@ router.get('/', asyncHandler(async (req, res, next) => {
     }
   })
 
-  var results = body.hits.hits.map(x => {
+
+  let results = {};
+  results.hits = body.hits.hits.map(x => {
     return {
       title: x.title,
       url: x._source.url,
       highlight: x.highlight
     }
   })
+  results.total = body.hits.total.value;
 
   res.send(results)
 }));
