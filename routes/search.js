@@ -5,6 +5,7 @@ var Client = require('@elastic/elasticsearch');
 const elasticUrl = process.env.elasticUrl || 'http://192.168.1.175:9200'
 const elasticUsername = process.env.elasticUsername || 'none'
 const elasticPassword = process.env.elasticPassword || 'none'
+const elasticIndex = process.env.elasticIndex || 'devportal'
 
 const client = new Client.Client({
   node: elasticUrl,
@@ -34,7 +35,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
   const {
     body
   } = await client.search({
-    index: 'developer-*',
+    index: elasticIndex,
     body: {
       from: startIndex,
       size: querySize,
