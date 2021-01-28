@@ -60,6 +60,8 @@ router.get('/', asyncHandler(async (req, res, next) => {
     }
   })
 
+  console.log("Results:");
+  console.log(body);
 
   let results = {};
   results.hits = body.hits.hits.map(x => {
@@ -71,8 +73,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
   })
   results.total = body.hits.total.value;
 
-  console.log("Results:");
-  console.log(results);
+  
 
   res.send(results)
 }));
