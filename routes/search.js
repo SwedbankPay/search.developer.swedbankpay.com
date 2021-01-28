@@ -32,6 +32,8 @@ router.get('/', asyncHandler(async (req, res, next) => {
   var query_splitted = query.trim().split(' ')
   var final_query = query_splitted.map(x => `${x}~1 `).join('')
 
+  console.log("Prepare search");
+
   const {
     body
   } = await client.search({
@@ -68,6 +70,9 @@ router.get('/', asyncHandler(async (req, res, next) => {
     }
   })
   results.total = body.hits.total.value;
+
+  console.log("Results:");
+  console.log(results);
 
   res.send(results)
 }));
