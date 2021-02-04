@@ -32,8 +32,6 @@ router.get('/', asyncHandler(async (req, res, next) => {
   var query_splitted = query.trim().split(' ')
   var final_query = query_splitted.map(x => `${x}~1 `).join('')
 
-  console.log("Prepare search");
-
   const {
     body
   } = await client.search({
@@ -60,12 +58,8 @@ router.get('/', asyncHandler(async (req, res, next) => {
     }
   })
 
-  console.log("Results:");
-  //console.log(body.hits.hits[0]);
-
   let results = {};
   results.hits = body.hits.hits.map(x => {
-    console.log(x._source);
     return {
       title: x._source.title,
       url: x._source.url,
