@@ -66,7 +66,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
   let results = {};
   results.hits = body.hits.hits.map(x => {
     return {
-      title: x.title,
+      title: x._source.title,
       url: x._source.url,
       highlight: x.highlight
     }
