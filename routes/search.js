@@ -61,10 +61,11 @@ router.get('/', asyncHandler(async (req, res, next) => {
   })
 
   console.log("Results:");
-  console.log(body.hits.hits[0]);
+  //console.log(body.hits.hits[0]);
 
   let results = {};
   results.hits = body.hits.hits.map(x => {
+    console.log(x._source);
     return {
       title: x._source.title,
       url: x._source.url,
