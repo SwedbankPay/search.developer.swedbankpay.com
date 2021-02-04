@@ -43,7 +43,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
       size: querySize,
       query: {
         query_string: {
-          default_field: "text",
+          fields: ["text", "title"],
           query: final_query,
           default_operator: "AND"
         }
