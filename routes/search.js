@@ -53,7 +53,7 @@ router.get('/', asyncHandler(async(req, res, next) => {
             highlight: {
                 fields: {
                     text: {
-                        fragment_size: 150,
+                        fragment_size: 250,
                         number_of_fragments: 3
                     }
                 },
