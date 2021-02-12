@@ -119,3 +119,5 @@ dist
 bin/*
 bin
 .env
+.vscode/
+.deployment

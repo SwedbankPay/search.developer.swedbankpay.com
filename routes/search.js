@@ -1,22 +1,25 @@
-import Express from 'express';
+var Express = require('express');
 var router = Express.Router();
-import {
-  Client
-} from '@elastic/elasticsearch';
+var Client = require('@elastic/elasticsearch');
 
-//const elasticUrl = process.env.elasticUrl || 'http://localhost:9200'
-const elasticUrl = process.env.elasticUrl || 'http://localhost:9200'
+const elasticUrl = process.env.elasticUrl || 'http://192.168.1.175:9200'
+const elasticUsername = process.env.elasticUsername || 'none'
+const elasticPassword = process.env.elasticPassword || 'none'
+const elasticIndex = process.env.elasticIndex || 'test-psp-developer'
 
-const client = new Client({
-  node: elasticUrl
+const client = new Client.Client({
+  node: elasticUrl,
+  auth: {
+    username: elasticUsername,
+    password: elasticPassword
+  },
 })
-import asyncHandler from 'express-async-handler';
+var asyncHandler = require('express-async-handler');
 
-
-router.get('/', asyncHandler(async (req, res, next) => {
+async function searchFunction(req, res) {
   var query = req.query.q + ''; //Force into a string
   if (query == null || query.length == 0) {
-    query = "developer portal"
+    query = "developer portal";
   }
   var startIndex = req.query.page;
   if (startIndex == null)
@@ -25,19 +28,23 @@ router.get('/', asyncHandler(async (req, res, next) => {
   if (querySize == null)
     querySize = 10;
 
-  var query_splitted = query.trim().split(' ')
-  var final_query = query_splitted.map(x => `${x}~1 `).join('')
+  if (startIndex != 0) {
+    startIndex = querySize * startIndex;
+  }
+
+  var query_splitted = query.trim().split(' ');
+  var final_query = query_splitted.map(x => `${x}~1 `).join('');
 
   const {
     body
   } = await client.search({
-    index: 'developer-*',
+    index: elasticIndex,
     body: {
       from: startIndex,
       size: querySize,
       query: {
         query_string: {
-          default_field: "text",
+          fields: ["text", "title"],
           query: final_query,
           default_operator: "AND"
         }
@@ -45,24 +52,31 @@ router.get('/', asyncHandler(async (req, res, next) => {
       highlight: {
         fields: {
           text: {
-            fragment_size: 150,
+            fragment_size: 250,
             number_of_fragments: 3
           }
         },
         tags_schema: "styled"
       }
     }
-  })
+  });
 
-  var results = body.hits.hits.map(x => {
+  let results = {};
+  results.hits = body.hits.hits.map(x => {
     return {
-      title: x.title,
+      title: x._source.title,
       url: x._source.url,
       highlight: x.highlight
-    }
-  })
+    };
+  });
+  results.total = body.hits.total.value;
 
-  res.send(results)
+  res.send(results);
+}
+
+router.get('/', asyncHandler(async (req, res, next) => {
+  await searchFunction(req, res);
 }));
 
-export default router;
+exports.searchRouter = router;
+exports.searchFunction = searchFunction;

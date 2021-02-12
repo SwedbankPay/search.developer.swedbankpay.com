@@ -11,7 +11,8 @@ search.addEventListener('keyup', function () {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === 4) {
       var json = JSON.parse(xhr.responseText)
-      code.textContent = JSON.stringify(json, undefined, 2);
+      code.textContent = JSON.stringify(json.hits, undefined, 2);
+      console.log(json.total);
     }
   };
   xhr.send();
