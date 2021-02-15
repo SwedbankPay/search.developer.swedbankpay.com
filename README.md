@@ -1,7 +1,7 @@
-# ELK node search proxy
+# Developer Portal Search
 
-This program is a simple proxy client for search used in
-[SwedbankPay developer portal][swedbankPayPortal].
+This program is a search interface for use in the
+[Swedbank Pay Developer Portal][swedbankPayPortal].
 
 ## Details
 
