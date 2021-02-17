@@ -5,7 +5,7 @@ var Client = require('@elastic/elasticsearch');
 const elasticUrl = process.env.elasticUrl || 'http://192.168.1.175:9200'
 const elasticUsername = process.env.elasticUsername || 'none'
 const elasticPassword = process.env.elasticPassword || 'none'
-const elasticIndex = process.env.elasticIndex || 'devportal'
+const elasticIndex = process.env.elasticIndex || 'test-psp-developer'
 
 const client = new Client.Client({
     node: elasticUrl,
