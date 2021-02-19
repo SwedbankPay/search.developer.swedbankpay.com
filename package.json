@@ -6,7 +6,8 @@
     "node": "v12.18.3"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "jest"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.9.0",
