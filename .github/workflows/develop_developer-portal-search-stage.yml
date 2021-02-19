@@ -3,10 +3,7 @@
 
 name: Build and deploy Node.js app to Azure Web App - developer-portal-search-stage
 
-on:
-  push:
-    branches:
-      - develop
+on: [push, pull_request]
 
 jobs:
   build-and-deploy:
@@ -40,6 +37,7 @@ jobs:
         npm run test --if-present
 
     - name: 'Deploy to Azure Web App'
+      if: github.ref == 'refs/heads/develop'
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'developer-portal-search-stage'
