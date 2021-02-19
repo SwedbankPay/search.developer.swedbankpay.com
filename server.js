@@ -87,3 +87,7 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+app.listen(port, () => {
+  console.log(`Listening on ${port}`);
+})
