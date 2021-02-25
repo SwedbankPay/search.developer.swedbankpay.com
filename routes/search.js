@@ -8,11 +8,11 @@ const elasticPassword = process.env.elasticPassword || 'none'
 const elasticIndex = process.env.elasticIndex || 'test-psp-developer-*'
 
 const client = new Client.Client({
-    node: elasticUrl,
-    auth: {
-        username: elasticUsername,
-        password: elasticPassword
-    },
+  node: elasticUrl,
+  auth: {
+    username: elasticUsername,
+    password: elasticPassword
+  },
 })
 let sidebar
 
@@ -89,3 +89,4 @@ router.get('/', asyncHandler(async(req, res, next) => {
 }));
 
 exports.searchRouter = router;
+exports.searchFunction = searchFunction;
