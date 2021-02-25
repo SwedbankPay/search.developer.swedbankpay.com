@@ -30,8 +30,8 @@ h1 {
 }
 
 .cards-content p{
-      color: #493c3b;
-      font-size: 1rem;
+  color: #493c3b;
+  font-size: 1rem;
 }
 
 .btn-primary {
@@ -53,8 +53,11 @@ h1 {
   align-items: center;
   margin-top: 3.5rem;
   text-decoration: none;
-  color: rgb(14, 4, 4);
+  color: #222;
   font-size: 1.125rem;
+}
+.sidebar-header:hover {
+  color: #222;
 }
 .sidebar-header-text {
   letter-spacing: 0.05rem;
