@@ -19,6 +19,15 @@ app.set('view engine', 'jsx');
 app.engine('jsx', require('express-react-views').createEngine());
 
 app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'", "design.swedbankpay.com fonts.googleapis.com"],
+      fontSrc: ["'self'", "https: data:"],
+      scriptSrc: ["'self'", "design.swedbankpay.com"]
+    }
+  })
+);
 app.use(compression())
 app.use(logger('dev'));
 app.use(express.json());
