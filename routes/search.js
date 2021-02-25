@@ -89,4 +89,3 @@ router.get('/', asyncHandler(async(req, res, next) => {
 }));
 
 exports.searchRouter = router;
-exports.searchFunction = searchFunction;
