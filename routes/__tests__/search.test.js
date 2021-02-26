@@ -1,7 +1,7 @@
 const nock = require('nock')
 const request = require("supertest");
 const app = require('../../app')
-const searchFunction = require('../../routes/search').searchFunction
+const searchFunction = require('../../routes/search').searchRouter
 
 function getTestData() {
   return {
