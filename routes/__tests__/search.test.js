@@ -28,7 +28,7 @@ function getTestData() {
 describe("Test the search function", () => {
   test("Get returns a 200 OK result", () => {
     const scope = nock('http://192.168.1.175:9200')
-    .post('/test-psp-developer/_search')
+    .post('/test-psp-developer-*/_search')
     .reply(200, getTestData());
 
     return request(app)
@@ -42,7 +42,7 @@ describe("Test the search function", () => {
 
   test("Get returns a neat result", () => {
     const scope = nock('http://192.168.1.175:9200')
-    .post('/test-psp-developer/_search')
+    .post('/test-psp-developer-*/_search')
     .reply(200, getTestData());
 
     return request(app)
