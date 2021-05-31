@@ -1,7 +1,7 @@
 var Express = require('express');
 var router = Express.Router();
 var Client = require('@elastic/elasticsearch');
-var Fetch = require('node-fetch')
+var fetch = require('node-fetch')
 const elasticUrl = process.env.elasticUrl || 'http://192.168.1.175:9200'
 const elasticUsername = process.env.elasticUsername || 'none'
 const elasticPassword = process.env.elasticPassword || 'none'
@@ -14,11 +14,11 @@ const client = new Client.Client({
     password: elasticPassword
   },
 })
-let sidebar
 
-Fetch('https://developer.stage.swedbankpay.com/sidebar.html')
-    .then(response => response.text())
-    .then(text => sidebar = text)
+async function getSidebar() {
+    const response = await fetch('https://developer.stage.swedbankpay.com/sidebar.html');
+    return await response.text();
+}
 
 var asyncHandler = require('express-async-handler');
 require("regenerator-runtime");
@@ -85,8 +85,8 @@ router.get('/', asyncHandler(async(req, res, next) => {
         page: req.query.page ? req.query.page : 0,
         size: querySize,
         originalUrl: req.originalUrl,
-        sidebar
-    })
+        sidebar: await getSidebar()
+    });
 }));
 
 exports.searchRouter = router;

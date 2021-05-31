@@ -1,4 +1,5 @@
 var React = require('react');
+
 function DefaultLayout(props) {
   return (
     <html>
@@ -8,7 +9,8 @@ function DefaultLayout(props) {
             <link rel="stylesheet" type="text/css" href="stylesheet/style.css" />
         </head>
         <body className="documentation">
-          <div class="row mr-0">
+          <div className="row mr-0">
+            I'm hit number one
             {props.children}
           </div>
           <script src="https://design.swedbankpay.com/v/5.0.2/scripts/dg.js"></script>
