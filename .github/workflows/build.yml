@@ -1,7 +1,6 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy Node.js app to Azure Web App - developer-portal-search-stage
+name: Build
 
 on: [push, pull_request]
 
@@ -12,13 +11,11 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - name: Set up Node.js version
-      uses: actions/setup-node@v1
+    - uses: actions/setup-node@v1
       with:
         node-version: '12.x'
 
-    - name: Cache Node.js modules
-      uses: actions/cache@v2
+    - uses: actions/cache@v2
       with:
         # npm cache files are stored in `~/.npm` on Linux/macOS
         path: ~/.npm
@@ -26,21 +23,19 @@ jobs:
         restore-keys: |
           ${{ runner.OS }}-node
           ${{ runner.OS }}-
+
     - run: npm ci
 
-    - name: Check syntax
+    - name: check
       run: find . -name "*.js" -not -path "./node_modules/*" -exec node --check {} \;
 
-    - name: npm build, and test
-      run: |
-        npm run build --if-present
-        npm run test --if-present
+    - run: npm run test
 
-    - name: 'Deploy to Azure Web App'
+    - name: Deploy to Azure Web App
       if: github.ref == 'refs/heads/develop'
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'developer-portal-search-stage'
-        slot-name: 'production'
+        app-name: developer-portal-search-stage
+        slot-name: production
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1043a8e4641b4abcbfda30028fb8c291 }}
         package: .
