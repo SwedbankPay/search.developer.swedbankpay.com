@@ -21,10 +21,11 @@ Fetch('https://developer.stage.swedbankpay.com/sidebar.html')
     .then(text => sidebar = text)
 
 var asyncHandler = require('express-async-handler');
+require("regenerator-runtime");
 
 router.get('/', asyncHandler(async(req, res, next) => {
     var query = req.query.q + ''; //Force into a string
-    
+
     if (query == null || query.length == 0) {
         query = "developer portal"
     }
@@ -38,10 +39,10 @@ router.get('/', asyncHandler(async(req, res, next) => {
     if (startIndex != 0) {
         startIndex = querySize * startIndex;
     }
-    
+
     var query_splitted = query.trim().split(' ')
     var final_query = query_splitted.map(x => `${x}~1 `).join('')
-    
+
     const {
         body
     } = await client.search({
@@ -67,7 +68,7 @@ router.get('/', asyncHandler(async(req, res, next) => {
             }
         }
     })
-    
+
     let results = {};
     results.hits = body.hits.hits.map(x => {
         return {
@@ -77,12 +78,12 @@ router.get('/', asyncHandler(async(req, res, next) => {
         }
     })
     results.total = body.hits.total.value;
-    
-    res.render('search', { 
-        results, 
-        query, 
-        page: req.query.page ? req.query.page : 0, 
-        size: querySize, 
+
+    res.render('search', {
+        results,
+        query,
+        page: req.query.page ? req.query.page : 0,
+        size: querySize,
         originalUrl: req.originalUrl,
         sidebar
     })
