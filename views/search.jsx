@@ -5,11 +5,16 @@ import Sidebar from './sidebar'
 
 const HelloMessage = (props) => {
   const { hits, total } = props.results
-  
-  function replaceTags(string) {
-      return string.replace(/<em class="hlt1">/g, "<b>").replace(/<\/em>/g, "</b>")+"...";
+
+  function hitText(hit) {
+    if (!hit || !hit.highlight || !hit.highlight.text || !Array.isArray(hit.highlight.text)) {
+      console.error('No highlight text found in hit:', hit);
+      return '';
+    }
+
+    return hit.highlight.text[0];
   }
-  
+
   return (
     <DefaultLayout title={props.query}>
       { props != undefined && <><Sidebar sidebar={props.sidebar} />
@@ -23,12 +28,12 @@ const HelloMessage = (props) => {
             </div>
           </div>
           <div id="search-content">
-            <div className="search-results">{hits.map(hit => (
-              <a href={hit.url} className="cards cards-primary">
+            <div className="search-results">{hits.map((hit, index) => (
+              <a key={index} href={hit.url} className="cards cards-primary">
                 <div className="cards-content">
                   <small>{hit.url.substring(1).replace(".html", "")}</small>
                   <span className="h3 mt-3">{hit.title}</span>
-                  <p class="mt-0" dangerouslySetInnerHTML={{ __html: replaceTags(hit.highlight.text[0]) }}></p>
+                  <p className="mt-0" dangerouslySetInnerHTML={{ __html: hitText(hit) }}></p>
                 </div>
                 <i className="material-icons">arrow_forward</i>
               </a>
