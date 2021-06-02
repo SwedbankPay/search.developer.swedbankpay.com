@@ -1,4 +1,4 @@
-var React = require('react');
+const React = require('react');
 
 function Sidebar(props) {
   function sidebar() {
@@ -24,7 +24,7 @@ function Sidebar(props) {
               <span>{"{"}</span>developer portal<span>{"}"}</span>
             </div>
           </a>
-          <form className="search-form mx-2 my-4 px-3 py-2 d-flex" method="get" action="/search">
+          <form className="search-form mx-2 my-4 px-3 py-2 d-flex" method="get" action="/">
             <input
               name="q"
               type="text"
