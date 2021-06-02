@@ -1,12 +1,11 @@
 var createError = require('http-errors')
 var express = require('express')
+var fetch = require('node-fetch')
 var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 var compression = require('compression')
 var helmet = require('helmet')
-
-var indexRouter = require('./routes/index.js')
 var searchRouter = require('./routes/search.js')
 
 var app = express();
@@ -35,9 +34,7 @@ app.use(express.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter.index)
-app.use('/search', searchRouter.searchRouter)
+app.use('/', searchRouter.index);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

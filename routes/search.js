@@ -1,3 +1,4 @@
+require("regenerator-runtime");
 var Express = require('express');
 var router = Express.Router();
 var Client = require('@elastic/elasticsearch');
@@ -6,6 +7,7 @@ const elasticUrl = process.env.elasticUrl || 'http://192.168.1.175:9200'
 const elasticUsername = process.env.elasticUsername || 'none'
 const elasticPassword = process.env.elasticPassword || 'none'
 const elasticIndex = process.env.elasticIndex || 'test-psp-developer-*'
+const asyncHandler = require('express-async-handler');
 
 const client = new Client.Client({
   node: elasticUrl,
@@ -20,15 +22,25 @@ async function getSidebar() {
     return await response.text();
 }
 
-var asyncHandler = require('express-async-handler');
-require("regenerator-runtime");
+exports.index = asyncHandler(async (req, res, next) => {
+    res.render('search', {
+        results: [],
+        query: null,
+        page: 0,
+        size: 0,
+        originalUrl: req.originalUrl,
+        sidebar: await getSidebar()
+    });
+});
 
-router.get('/', asyncHandler(async(req, res, next) => {
+exports.search = async (req, res, next) => {
     var query = req.query.q + ''; //Force into a string
 
     if (query == null || query.length == 0) {
-        query = "developer portal"
+        console.log('No query');
+        return res.render('search');
     }
+
     var startIndex = req.query.page;
     if (startIndex == null)
         startIndex = 0;
@@ -87,6 +99,4 @@ router.get('/', asyncHandler(async(req, res, next) => {
         originalUrl: req.originalUrl,
         sidebar: await getSidebar()
     });
-}));
-
-exports.searchRouter = router;
+};

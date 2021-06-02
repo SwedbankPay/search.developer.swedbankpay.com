@@ -1,6 +1,6 @@
 var React = require('react');
 
-function DefaultLayout(props) {
+module.exports = (props) => {
   return (
     <html>
         <head>
@@ -10,13 +10,10 @@ function DefaultLayout(props) {
         </head>
         <body className="documentation">
           <div className="row mr-0">
-            I'm hit number one
             {props.children}
           </div>
           <script src="https://design.swedbankpay.com/v/5.0.2/scripts/dg.js"></script>
         </body>
     </html>
   );
-}
-
-module.exports = DefaultLayout;
+};

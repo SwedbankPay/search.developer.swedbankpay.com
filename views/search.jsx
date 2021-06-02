@@ -3,7 +3,7 @@ var DefaultLayout = require('./layouts/default');
 import Pagination from './pagination'
 import Sidebar from './sidebar'
 
-const HelloMessage = (props) => {
+module.exports = (props) => {
   const { hits, total } = props.results
 
   function hitText(hit) {
@@ -28,7 +28,7 @@ const HelloMessage = (props) => {
             </div>
           </div>
           <div id="search-content">
-            <div className="search-results">{hits.map((hit, index) => (
+            <div className="search-results">{hits && hits.length > 0 && hits.map((hit, index) => (
               <a key={index} href={hit.url} className="cards cards-primary">
                 <div className="cards-content">
                   <small>{hit.url.substring(1).replace(".html", "")}</small>
@@ -44,6 +44,4 @@ const HelloMessage = (props) => {
       </main></>}
     </DefaultLayout>
   );
-}
-
-module.exports = HelloMessage;
+};
