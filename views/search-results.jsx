@@ -11,7 +11,7 @@ function hitText(hit) {
 }
 
 function hydrateHits(props) {
-  if (!props || !props.results || !props.results.hits || !props.results.total) {
+  if (props?.results?.hits == undefined || props?.results?.total == undefined) {
     return {
       lead: 'Type in the query you wish to search for below.'
     };
