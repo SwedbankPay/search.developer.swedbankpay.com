@@ -13,7 +13,7 @@ module.exports = (props) => {
         required
         pattern=".{3,}"
         title="At least 3 characters"
-        value={props.query} />
+        defaultValue={props.query} />
       <button className="submit-form-btn mb-0">
         <i className="material-icons m-0" aria-hidden="true">search</i>
       </button>

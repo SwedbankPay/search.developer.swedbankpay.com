@@ -8,7 +8,7 @@ import SearchResults from './search-results';
 module.exports = (props) => {
   return (
     <DefaultLayout title={props.query}>
-      <Sidebar sidebar={props.sidebar} />
+      <Sidebar sidebar={props.sidebar} query={props.query} />
       <main className="doc-view">
         <div className="doc-container">
           <SearchHeader {...props} />
