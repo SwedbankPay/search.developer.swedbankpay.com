@@ -14,7 +14,7 @@ module.exports = (props) => {
           <SearchHeader {...props} />
           <div id="search-content">
             <div className="search-results">
-              <SearchResults hits={props.results.hits} query={props.query} />
+              <SearchResults {...props} />
             </div>
             <Pagination {...props} />
           </div>

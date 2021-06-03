@@ -10,26 +10,27 @@ function hitText(hit) {
   return hit.highlight.text[0];
 }
 
-function extractHits(props) {
-  if (!props || !props.hits) {
+function hydrateHits(props) {
+  if (!props || !props.results || !props.results.hits || !props.results.total) {
     return {
-      hits: null,
       lead: 'Type in the query you wish to search for below.'
     };
-  } else if (props.hits.length == 0) {
+  } else if (props.results.hits.length == 0) {
     return {
-      hits: null,
       lead: `No results were found for "${props.query}". Please try another search term.`
     };
   }
 
-  return { hits: props.results.hits };
+  return props.results;
 }
 
 module.exports = (props) => {
-  const { hits, lead } = extractHits(props);
+  // const { sidebar, ...x} = props;
+  // console.log('Search results:', x);
 
-  if (hits == null) {
+  const { hits, total, lead } = hydrateHits(props);
+
+  if (!hits || !total) {
     return (
       <div>
         <h2>Search</h2>
@@ -40,11 +41,11 @@ module.exports = (props) => {
   }
 
   return hits.map((hit, index) => (
-    <a key={index} href={hit.url} className="cards cards-primary">
+    <a key={index} href={hit.url} className="cards cards-primary search-result">
       <div className="cards-content">
         <small>{hit.url.substring(1).replace(".html", "")}</small>
-        <span className="h3 mt-3">{hit.title}</span>
-        <p className="mt-0" dangerouslySetInnerHTML={{ __html: hitText(hit) }}></p>
+        <span className="h3 mt-3 search-result-title">{hit.title}</span>
+        <p className="mt-0 search-result-text" dangerouslySetInnerHTML={{ __html: hitText(hit) }}></p>
       </div>
       <i className="material-icons">arrow_forward</i>
     </a>
