@@ -4,7 +4,14 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "test": "jest"
+    "test": "jest",
+    "watch": "npm-watch"
+  },
+  "watch": {
+    "start": {
+      "extensions": "js,jsx",
+      "verbose": true
+    }
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.11.0",
@@ -25,6 +32,7 @@
     "jest": "^27.0.3",
     "nock": "^13.1.0",
     "nodemon": "^2.0.7",
+    "npm-watch": "^0.9.0",
     "superagent": "^6.1.0",
     "supertest": "^6.1.3"
   }
