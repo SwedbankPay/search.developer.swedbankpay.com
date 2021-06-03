@@ -1,47 +1,21 @@
 # Developer Portal Search
 
-This program is a search interface for use in the
-[Swedbank Pay Developer Portal][swedbankPayPortal].
+This program is a search interface for use in the [Swedbank Pay Developer
+Portal][devportal].
 
-## Details
+## Setup
 
-Spin up a [Express][express] with `npm run start`.
-Search by sending request to:
-`/search/?q=${value}&size=${value}&page=${value}`.
-Response looks like the following:
+The search portal consists of an [Express][express] frontend application that
+performs searches towards an Elasticsearch backend. To spin up all required
+parts on your local development machine, use Docker Compose:
 
-```js
-{
-    "hits": [
-        {
-            "url": "/url-to-resource",
-            "highlight": {
-                "text": [
-                    "Line 1, each is set to a limit of 150 characters",
-                    "Line 2, they come preformated",
-                    "Line 3"
-                ]
-            }
-        },
-        {
-            "url": "/payment-instruments/card/after-payment.html",
-            "highlight": {
-                "text": [
-                    "Line 1, each is set to a limit of 150 characters",
-                    "Line 2, they come preformated",
-                    "Line 3"
-                ]
-            }
-        }
-    ],
-    "total": 2
-}
+```shell
+docker compose up
 ```
 
-## Configuration
-
-1. `process.env.PORT` is what port this will listen to.
-2. `process.env.elasticUrl` where to proxy the request to.
+This should bring up Elasticsearch, Kibana and the Express application on your
+local machine. You can try out the application by visiting
+`http://localhost:3000` in a browser.
 
 [express]: https://expressjs.com/
-[swedbankPayPortal]: developer.swedbankpay.com/
+[devportal]: developer.swedbankpay.com/
