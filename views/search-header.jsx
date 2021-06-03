@@ -8,7 +8,7 @@ module.exports = (props) => {
   if (isIndex) {
     searchHeaderTitle = "Search the Developer Portal";
   } else {
-    searchHeaderTitle = `Results for \"${props.query}\".`;
+    searchHeaderTitle = `Results for \"${props.query}\"`;
     resultsLead = `${props.results.total} results found`;
   }
 

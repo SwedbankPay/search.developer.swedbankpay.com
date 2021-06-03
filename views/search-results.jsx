@@ -11,12 +11,12 @@ function hitText(hit) {
 }
 
 function extractHits(props) {
-  if (!props || !props.results || !props.results.hits) {
+  if (!props || !props.hits) {
     return {
       hits: null,
       lead: 'Type in the query you wish to search for below.'
     };
-  } else if (props.results.hits.length == 0) {
+  } else if (props.hits.length == 0) {
     return {
       hits: null,
       lead: `No results were found for "${props.query}". Please try another search term.`
@@ -34,7 +34,7 @@ module.exports = (props) => {
       <div>
         <h2>Search</h2>
         <p>{lead}</p>
-        <SearchForm />
+        <SearchForm query={props.query} />
       </div>
     );
   }
