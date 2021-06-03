@@ -1,8 +1,7 @@
 var React = require('react');
 
 module.exports = (props) => {
-  const isIndex = props.query == null;
-  if (isIndex) {
+  if (props.query == null) {
     return null;
   }
 
