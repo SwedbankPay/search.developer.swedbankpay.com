@@ -1,11 +1,11 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 
-name: Build
+name: Test
 
 on: [push, pull_request]
 
 jobs:
-  build-and-deploy:
+  test-and-deploy:
     runs-on: ubuntu-latest
 
     steps:

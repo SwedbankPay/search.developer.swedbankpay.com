@@ -4,7 +4,17 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "test": "jest"
+    "test": "jest",
+    "watch": "npm-watch"
+  },
+  "watch": {
+    "start": {
+      "extensions": "js,jsx",
+      "verbose": true
+    }
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.11.0",
@@ -23,8 +33,11 @@
   },
   "devDependencies": {
     "jest": "^27.0.3",
+    "jquery": "^3.6.0",
     "nock": "^13.1.0",
     "nodemon": "^2.0.7",
+    "npm-watch": "^0.9.0",
+    "setimmediate": "^1.0.5",
     "superagent": "^6.1.0",
     "supertest": "^6.1.3"
   }

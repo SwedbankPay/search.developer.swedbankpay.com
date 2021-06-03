@@ -1,61 +1,92 @@
 const nock = require('nock')
 const request = require("supertest");
 const app = require('../../app')
-const searchFunction = require('../../routes/search').searchRouter
+const $ = require('jquery');
+import setImmediate from 'setimmediate';
 
-const testData = {
-  hits: {
-    total: 2,
-    hits: [{
-      _source: {
-        title: "I am hit number one",
-        url: "https://example.com/hits/1",
+function mockElasticsearch(hitme) {
+  const hitsTestData = {
+    hits: {
+      total: {
+        value: 2
       },
-      highlight: {
-        text: ["Highlighted text for hit number one"]
-      }
-    },
-    {
-      _source: {
-        title: "I am hit number two",
-        url: "https://example.com/hits/2",
+      hits: [{
+        _source: {
+          title: "I am hit number one",
+          url: "https://example.com/hits/1",
+        },
+        highlight: {
+          text: ["Highlighted text for hit number one"]
+        }
       },
-      highlight: {
-        text: ["Highlighted text for hit number two"]
-      }
-    }]
-  }
-};
+      {
+        _source: {
+          title: "I am hit number two",
+          url: "https://example.com/hits/2",
+        },
+        highlight: {
+          text: ["Highlighted text for hit number two"]
+        }
+      }]
+    }
+  };
 
-describe("Test the search function", () => {
-  test("Get returns a 200 OK result", () => {
-    nock('http://192.168.1.175:9200')
-      .post('/test-psp-developer-*/_search')
-      .reply(200, testData);
+  const noHitsTestData = { hits: { total: { value: 0 }, hits: [] } };
+  const testData = hitme ? hitsTestData : noHitsTestData;
 
-    return request(app)
-      .get("/search")
-      .set('Authorization', "super-secret-key")
-      .then(response => {
-        // console.log(response)
-        expect(response.statusCode).toBe(200);
-      });
+  nock('http://192.168.1.175:9200')
+    .post('/test-psp-developer-*/_search')
+    .reply(200, testData);
+}
+
+describe("Search", () => {
+  test("index returns 200 OK", () => {
+    return request(app).get("/").then(response => {
+      expect(response.statusCode).toBe(200);
+
+      document.body.innerHTML = response.text;
+
+      expect($(".search-header h1").text()).toEqual("Search the Developer Portal");
+      expect($("#search-content .search-results p").text()).toEqual("Type in the query you wish to search for below.")
+    });
   });
 
-  test("Get returns a neat result", () => {
-    nock('http://192.168.1.175:9200')
-      .post('/test-psp-developer-*/_search')
-      .reply(200, testData);
+  test("search returns search result", () => {
+    mockElasticsearch(true);
 
-    return request(app)
-      .get("/search")
-      .set('Authorization', "super-secret-key")
-      .then(response => {
-        expect(response.statusCode).toBe(200);
-        expect(response.text).toContain("I am hit number one");
-        expect(response.text).toContain("Highlighted text for hit number one");
-        expect(response.text).toContain("I am hit number two");
-        expect(response.text).toContain("Highlighted text for hit number two");
-      });
+    return request(app).get("/?q=abc").then(response => {
+      expect(response.statusCode).toBe(200);
+
+      document.body.innerHTML = response.text;
+
+      expect($(".search-header h1").text()).toEqual("Results for \"abc\"");
+
+      const searchResults = $("#search-content .search-results .search-result");
+      const searchResultTexts = $(".search-result-text", searchResults);
+      const searchResultTitles = $(".search-result-title", searchResults);
+
+      expect(searchResults.length).toBe(2);
+      expect(searchResultTexts.length).toBe(2);
+      expect(searchResultTitles.length).toBe(2);
+
+      expect(searchResultTitles.first().text()).toEqual("I am hit number one")
+      expect(searchResultTexts.first().text()).toEqual("Highlighted text for hit number one")
+      expect(searchResultTitles.last().text()).toEqual("I am hit number two")
+      expect(searchResultTexts.last().text()).toEqual("Highlighted text for hit number two")
+    });
+  });
+
+  test("search returns no results", () => {
+    mockElasticsearch(false);
+
+    return request(app).get("/?q=nope").then(response => {
+      expect(response.statusCode).toBe(200);
+
+      document.body.innerHTML = response.text;
+
+      expect($(".search-header h1").text()).toEqual("Results for \"nope\"");
+      expect($("#search-content .search-results p").text()).toEqual("No results were found for \"nope\". Please try another search term.")
+      expect($("#search-content .search-results .search-result").length).toBe(0);
+    });
   });
 });
