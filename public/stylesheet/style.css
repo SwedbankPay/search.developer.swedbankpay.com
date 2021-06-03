@@ -34,6 +34,11 @@ h1 {
   font-size: 1rem;
 }
 
+.search-result-text em {
+  font-style: normal;
+  font-weight: bold;
+}
+
 .btn-primary {
   min-width: 2.5rem;
   font-size: 1.25rem;
