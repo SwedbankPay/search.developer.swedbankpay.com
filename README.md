@@ -18,4 +18,4 @@ local machine. You can try out the application by visiting
 `http://localhost:3000` in a browser.
 
 [express]: https://expressjs.com/
-[devportal]: developer.swedbankpay.com/
+[devportal]: https://developer.swedbankpay.com/
