@@ -38,9 +38,10 @@ function buildBreadcrumbs(hit) {
 
 function renderHit(hit, index) {
   const breadcrumbs = buildBreadcrumbs(hit);
+  const extensionlessUrl = hit.url.replace('.html', '');
 
   return (
-    <a key={index} href={hit.url} className="cards cards-primary search-result">
+    <a key={index} href={extensionlessUrl} className="cards cards-primary search-result">
       <div className="cards-content">
         <small className="breadcrumbs">{breadcrumbs}</small>
         <span className="h3 mt-3 search-result-title">{hit.title}</span>
