@@ -14,7 +14,8 @@ jobs:
       uses: someimportantcompany/github-actions-slack-message@v1
       id: slack
       with:
-        webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        channel: developer-experience-dev
+        bot-token: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
         text: 'Developer Portal Search Deployment: Started'
 
     - uses: actions/checkout@v2.3.4
@@ -61,7 +62,7 @@ jobs:
       if: success() && github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
       uses: someimportantcompany/github-actions-slack-message@v1
       with:
-        webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        bot-token: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
         message-id: ${{ steps.slack.outputs.message-id }}
         text: 'Developer Portal Search Deployment: Success'
         color: good
@@ -72,7 +73,7 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
       uses: someimportantcompany/github-actions-slack-message@v1
       with:
-        webhook-url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        bot-token: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
         message-id: ${{ steps.slack.outputs.message-id }}
         text: 'Developer Portal Search Deployment: Failure'
         color: danger
