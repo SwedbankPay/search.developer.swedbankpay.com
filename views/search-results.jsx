@@ -24,11 +24,25 @@ function hydrateHits(props) {
   return props.results;
 }
 
+function buildBreadcrumbs(hit) {
+  const url = new URL(hit.url);
+  const path = url.pathname.replace('.html', '');
+  const parts = path.split('/');
+
+  return parts
+    // Filter away all empty parts:
+    .filter(Boolean)
+    // And join the parts back into a string separated by '›':
+    .join(' › ');
+}
+
 function renderHit(hit, index) {
+  const breadcrumbs = buildBreadcrumbs(hit);
+
   return (
     <a key={index} href={hit.url} className="cards cards-primary search-result">
       <div className="cards-content">
-        <small>{hit.url.substring(1).replace(".html", "")}</small>
+        <small className="breadcrumbs">{breadcrumbs}</small>
         <span className="h3 mt-3 search-result-title">{hit.title}</span>
         <p className="mt-0 search-result-text" dangerouslySetInnerHTML={{ __html: hitText(hit) }}></p>
       </div>

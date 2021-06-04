@@ -64,15 +64,19 @@ describe("Search", () => {
       const searchResults = $("#search-content .search-results .search-result");
       const searchResultTexts = $(".search-result-text", searchResults);
       const searchResultTitles = $(".search-result-title", searchResults);
+      const searchResultBreadcrumbs = $(".breadcrumbs", searchResults);
 
       expect(searchResults.length).toBe(2);
       expect(searchResultTexts.length).toBe(2);
       expect(searchResultTitles.length).toBe(2);
+      expect(searchResultBreadcrumbs.length).toBe(2);
 
       expect(searchResultTitles.first().text()).toEqual("I am hit number one")
       expect(searchResultTexts.first().text()).toEqual("Highlighted text for hit number one")
+      expect(searchResultBreadcrumbs.first().text()).toEqual("hits › 1")
       expect(searchResultTitles.last().text()).toEqual("I am hit number two")
       expect(searchResultTexts.last().text()).toEqual("Highlighted text for hit number two")
+      expect(searchResultBreadcrumbs.last().text()).toEqual("hits › 2")
     });
   });
 
