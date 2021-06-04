@@ -3,6 +3,9 @@ const Express = require('express');
 const ElasticSearch = require('@elastic/elasticsearch');
 const fetch = require('node-fetch')
 const asyncHandler = require('express-async-handler');
+const baseUrl = process.env.ENV === 'stage'
+    ? 'https://developer.stage.swedbankpay.com'
+    : 'https://developer.swedbankpay.com';
 
 function getElasticSearchClient() {
     const elasticHosts = process.env.ELASTICSEARCH_HOSTS || 'http://192.168.1.175:9200';
@@ -41,16 +44,13 @@ async function hydrateSearchState(req) {
     return searchState;
 }
 
-function mapResults(body) {
+function mapHit(hit) {
+    const url = new URL(hit._source.url, baseUrl)
+
     return {
-        total: body.hits.total.value,
-        hits: body.hits.hits.map(x => {
-            return {
-                title: x._source.title,
-                url: x._source.url,
-                highlight: x.highlight
-            }
-        })
+        title: hit._source.title,
+        url: url.href,
+        highlight: hit.highlight
     };
 }
 
@@ -84,7 +84,10 @@ exports.search = asyncHandler(async (req, res, next) => {
             }
         });
 
-        searchState.results = mapResults(body);
+        searchState.results = {
+            total: body.hits.total.value,
+            hits: body.hits.hits.map(mapHit)
+        };
     } else {
         searchState.results = { hits: [] };
     }

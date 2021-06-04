@@ -24,6 +24,19 @@ function hydrateHits(props) {
   return props.results;
 }
 
+function renderHit(hit, index) {
+  return (
+    <a key={index} href={hit.url} className="cards cards-primary search-result">
+      <div className="cards-content">
+        <small>{hit.url.substring(1).replace(".html", "")}</small>
+        <span className="h3 mt-3 search-result-title">{hit.title}</span>
+        <p className="mt-0 search-result-text" dangerouslySetInnerHTML={{ __html: hitText(hit) }}></p>
+      </div>
+      <i className="material-icons">arrow_forward</i>
+    </a>
+  );
+}
+
 module.exports = (props) => {
   // const { sidebar, ...x} = props;
   // console.log('Search results:', x);
@@ -40,14 +53,5 @@ module.exports = (props) => {
     );
   }
 
-  return hits.map((hit, index) => (
-    <a key={index} href={hit.url} className="cards cards-primary search-result">
-      <div className="cards-content">
-        <small>{hit.url.substring(1).replace(".html", "")}</small>
-        <span className="h3 mt-3 search-result-title">{hit.title}</span>
-        <p className="mt-0 search-result-text" dangerouslySetInnerHTML={{ __html: hitText(hit) }}></p>
-      </div>
-      <i className="material-icons">arrow_forward</i>
-    </a>
-  ));
+  return hits.map(renderHit);
 }
