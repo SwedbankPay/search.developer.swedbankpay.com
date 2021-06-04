@@ -62,6 +62,7 @@ jobs:
       if: success() && github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
       uses: someimportantcompany/github-actions-slack-message@v1
       with:
+        channel: developer-experience-dev
         bot-token: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
         message-id: ${{ steps.slack.outputs.message-id }}
         text: 'Developer Portal Search Deployment: Success'
@@ -73,6 +74,7 @@ jobs:
         SLACK_BOT_TOKEN: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
       uses: someimportantcompany/github-actions-slack-message@v1
       with:
+        channel: developer-experience-dev
         bot-token: ${{ secrets.SLACK_NOTIFICATIONS_BOT_TOKEN }}
         message-id: ${{ steps.slack.outputs.message-id }}
         text: 'Developer Portal Search Deployment: Failure'
