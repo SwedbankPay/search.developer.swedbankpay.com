@@ -2,29 +2,42 @@
   "name": "elk-node-search-proxy",
   "version": "0.0.1",
   "private": true,
-  "engines": {
-    "node": "v12.18.3"
-  },
   "scripts": {
     "start": "node server.js",
-    "test": "jest"
+    "test": "jest",
+    "watch": "npm-watch"
+  },
+  "watch": {
+    "start": {
+      "extensions": "js,jsx",
+      "verbose": true
+    }
+  },
+  "jest": {
+    "testEnvironment": "jsdom"
   },
   "dependencies": {
     "@elastic/elasticsearch": "^7.11.0",
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.4",
-    "debug": "~4.3.1",
+    "debug": "~4.3.2",
     "express": "~4.17.1",
     "express-async-handler": "^1.1.4",
-    "helmet": "^4.4.1",
-    "http-errors": "^1.8.0",
-    "jade": "^1.9.2",
-    "morgan": "~1.10.0"
+    "express-react-views": "^0.11.0",
+    "helmet": "^4.5.0",
+    "http-errors": "^1.6.3",
+    "morgan": "~1.10.0",
+    "node-fetch": "^2.6.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "jest": "^26.6.3",
-    "nock": "^13.0.7",
+    "jest": "^27.0.4",
+    "jquery": "^3.6.0",
+    "nock": "^13.1.0",
     "nodemon": "^2.0.7",
+    "npm-watch": "^0.9.0",
+    "setimmediate": "^1.0.5",
     "superagent": "^6.1.0",
     "supertest": "^6.1.3"
   }

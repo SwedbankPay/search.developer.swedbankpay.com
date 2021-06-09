@@ -1,82 +1,96 @@
-var Express = require('express');
-var router = Express.Router();
-var Client = require('@elastic/elasticsearch');
+require("regenerator-runtime");
+const Express = require('express');
+const ElasticSearch = require('@elastic/elasticsearch');
+const fetch = require('node-fetch')
+const asyncHandler = require('express-async-handler');
+const baseUrl = process.env.ENV === 'stage'
+    ? 'https://developer.stage.swedbankpay.com'
+    : 'https://developer.swedbankpay.com';
 
-const elasticUrl = process.env.elasticUrl || 'http://192.168.1.175:9200'
-const elasticUsername = process.env.elasticUsername || 'none'
-const elasticPassword = process.env.elasticPassword || 'none'
-const elasticIndex = process.env.elasticIndex || 'test-psp-developer'
+function getElasticSearchClient() {
+    const elasticHosts = process.env.ELASTICSEARCH_HOSTS || 'http://192.168.1.175:9200';
+    const elasticUsername = process.env.ELASTICSEARCH_USERNAME || 'none';
+    const elasticPassword = process.env.ELASTICSEARCH_PASSWORD || 'none';
 
-const client = new Client.Client({
-  node: elasticUrl,
-  auth: {
-    username: elasticUsername,
-    password: elasticPassword
-  },
-})
-var asyncHandler = require('express-async-handler');
-
-async function searchFunction(req, res) {
-  var query = req.query.q + ''; //Force into a string
-  if (query == null || query.length == 0) {
-    query = "developer portal";
-  }
-  var startIndex = req.query.page;
-  if (startIndex == null)
-    startIndex = 0;
-  var querySize = req.query.size;
-  if (querySize == null)
-    querySize = 10;
-
-  if (startIndex != 0) {
-    startIndex = querySize * startIndex;
-  }
-
-  var query_splitted = query.trim().split(' ');
-  var final_query = query_splitted.map(x => `${x}~1 `).join('');
-
-  const {
-    body
-  } = await client.search({
-    index: elasticIndex,
-    body: {
-      from: startIndex,
-      size: querySize,
-      query: {
-        query_string: {
-          fields: ["text", "title"],
-          query: final_query,
-          default_operator: "AND"
-        }
-      },
-      highlight: {
-        fields: {
-          text: {
-            fragment_size: 250,
-            number_of_fragments: 3
-          }
+    return new ElasticSearch.Client({
+        node: elasticHosts,
+        auth: {
+          username: elasticUsername,
+          password: elasticPassword
         },
-        tags_schema: "styled"
-      }
-    }
-  });
-
-  let results = {};
-  results.hits = body.hits.hits.map(x => {
-    return {
-      title: x._source.title,
-      url: x._source.url,
-      highlight: x.highlight
-    };
-  });
-  results.total = body.hits.total.value;
-
-  res.send(results);
+    });
 }
 
-router.get('/', asyncHandler(async (req, res, next) => {
-  await searchFunction(req, res);
-}));
+async function getSidebar() {
+    // TODO: Find out a way to fetch the sidebar inside app.js or somewhere more global
+    const response = await fetch('https://developer.stage.swedbankpay.com/sidebar.html');
+    return await response.text();
+}
 
-exports.searchRouter = router;
-exports.searchFunction = searchFunction;
+async function hydrateSearchState(req) {
+    const sidebar = await getSidebar();
+    const query = req.query.q;
+    const originalUrl = req.originalUrl;
+    const page = req.query.page || 0;
+    const size = req.query.size || 5;
+    const results = null;
+    const searchState = { results, query, page, size, originalUrl, sidebar };
+
+    if (query != null) {
+        searchState.startIndex = page > 0 ? size * page : 0;
+        searchState.elasticQuery = query.trim().split(' ').map(x => `${x}~1 `).join('')
+    }
+
+    return searchState;
+}
+
+function mapHit(hit) {
+    const url = new URL(hit._source.url, baseUrl)
+
+    return {
+        title: hit._source.title,
+        url: url.href,
+        highlight: hit.highlight
+    };
+}
+
+exports.search = asyncHandler(async (req, res, next) => {
+    const searchState = await hydrateSearchState(req);
+
+    if (searchState.query != null) {
+        const elasticIndex = process.env.ELASTICSEARCH_INDEX || 'test-psp-developer-*'
+        const elasticSearchClient = getElasticSearchClient();
+        const { body } = await elasticSearchClient.search({
+            index: elasticIndex,
+            body: {
+                from: searchState.startIndex,
+                size: searchState.size,
+                query: {
+                    query_string: {
+                        fields: ["text", "title"],
+                        query: searchState.elasticQuery,
+                        default_operator: "AND"
+                    }
+                },
+                highlight: {
+                    fields: {
+                        text: {
+                            fragment_size: 250,
+                            number_of_fragments: 3
+                        }
+                    },
+                    tags_schema: "styled"
+                }
+            }
+        });
+
+        searchState.results = {
+            total: body.hits.total.value,
+            hits: body.hits.hits.map(mapHit)
+        };
+    } else {
+        searchState.results = { hits: [] };
+    }
+
+    res.render('search', searchState);
+});

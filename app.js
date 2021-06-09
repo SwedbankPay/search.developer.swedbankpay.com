@@ -1,12 +1,11 @@
 var createError = require('http-errors')
 var express = require('express')
+var fetch = require('node-fetch')
 var path = require('path')
 var cookieParser = require('cookie-parser')
 var logger = require('morgan')
 var compression = require('compression')
 var helmet = require('helmet')
-
-var indexRouter = require('./routes/index.js')
 var searchRouter = require('./routes/search.js')
 
 var app = express();
@@ -14,9 +13,19 @@ var __dirname = path.resolve();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'jsx');
+app.engine('jsx', require('express-react-views').createEngine());
 
 app.use(helmet());
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'", "design.swedbankpay.com fonts.googleapis.com"],
+      fontSrc: ["'self'", "https: data:"],
+      scriptSrc: ["'self'", "design.swedbankpay.com"]
+    }
+  })
+);
 app.use(compression())
 app.use(logger('dev'));
 app.use(express.json());
@@ -25,9 +34,7 @@ app.use(express.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter.indexRouter);
-app.use('/search', searchRouter.searchRouter)
+app.use('/', searchRouter.search);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

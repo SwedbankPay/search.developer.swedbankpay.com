@@ -1,0 +1,113 @@
+.doc-view {
+  position: relative;
+}
+/* Top header */
+.search-header {
+  width: 100%;
+  color: #ffffff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #493c3b;
+}
+.search-top {
+  color: #ffffff;
+  max-width: 55rem;
+  padding: 1rem;
+}
+
+h1 {
+  color: #ffffff;
+}
+
+.total-results {
+  color: #fdc129;
+}
+
+/* Search content */
+#search-content {
+  margin-top: 14.5rem;
+}
+
+.cards-content p{
+  color: #493c3b;
+  font-size: 1rem;
+}
+
+.search-result-text em {
+  font-style: normal;
+  font-weight: bold;
+}
+
+.btn-primary {
+  min-width: 2.5rem;
+  font-size: 1.25rem;
+  box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+}
+
+.btn-primary.current-page {
+  background-color: #493c3b;
+  color: #ffffff;
+}
+
+/* Sidebar */
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3.5rem;
+  text-decoration: none;
+  color: #222;
+  font-size: 1.125rem;
+}
+.sidebar-header:hover {
+  color: #222;
+}
+.sidebar-header-text {
+  letter-spacing: 0.05rem;
+  font-family: "Akkurat-Mono", monospace;
+}
+
+.sidebar-header-text span{
+  color: #fdc129;
+}
+
+.nav-subgroup-heading a {
+  text-decoration: none;
+  color: #512b2b;
+}
+.nav-subgroup-heading a:hover {
+  color: #257886;
+}
+/* Search form */
+.search-form {
+  box-shadow: 1px 2px 10px rgba(0, 0, 0, 0.15);
+  border-radius: 0.125rem;
+}
+.search-form:focus-within {
+  outline: -webkit-focus-ring-color auto 0.5px;
+}
+.search-input {
+  color: #72605e;
+  font-size: 0.875rem;
+  border: none;
+  padding: 0.375rem;
+}
+i {
+  display: block;
+  color: #512b2b;
+}
+i:hover {
+  color: #257886;
+}
+.search-input:focus {
+  color: #512b2b;
+  outline: none
+}
+
+.submit-form-btn {
+  background-color: #ffffff;
+  border: none;
+  cursor: pointer;
+}
