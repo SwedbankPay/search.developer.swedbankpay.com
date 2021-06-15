@@ -1,18 +1,31 @@
 version: '3.7'
 
 services:
-  node:
+  search:
     image: node:14
-    container_name: nodejs
+    container_name: search.developer.swedbankpay.com
     restart: unless-stopped
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - ELASTICSEARCH_USERNAME=elasticsearch
+      - PORT=3000
     ports: [3000:3000]
     volumes:
       - .:/home/node/app
     command: npm run watch
     working_dir: /home/node/app
+    depends_on: [elasticsearch]
+
+  developer-portal:
+    container_name: developer.swedbankpay.com
+    build:
+      context: .docker
+      dockerfile: developer-portal.dockerfile
+    command: build
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=elasticsearch
+      - JEKYLL_ENV=stage
     depends_on: [elasticsearch]
 
   elasticsearch:
