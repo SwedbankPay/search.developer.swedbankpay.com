@@ -6,3 +6,5 @@ RUN git \
     --branch develop \
     --single-branch \
     .
+
+RUN bundle install
