@@ -21,7 +21,6 @@ services:
     build:
       context: .docker
       dockerfile: developer-portal.dockerfile
-    command: build
     environment:
       - DEBUG=1
       - ELASTICSEARCH_URL=http://elasticsearch:9200

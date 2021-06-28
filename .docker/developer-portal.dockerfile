@@ -7,4 +7,7 @@ RUN git \
     --single-branch \
     .
 
-RUN bundle install
+COPY ./wait_for_elasticsearch.sh /var/jekyll/entrypoint/sh/wait_for_elasticsearch.sh
+RUN chmod +x /var/jekyll/entrypoint/sh/wait_for_elasticsearch.sh
+
+ENTRYPOINT ["/var/jekyll/entrypoint/sh/wait_for_elasticsearch.sh"]
