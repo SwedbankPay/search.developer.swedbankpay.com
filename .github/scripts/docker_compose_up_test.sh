@@ -52,7 +52,7 @@ docker_compose_up_and_test() {
 main() {
     parse_args "$@"
     enable_expanded_output
-    docker_run_and_test
+    docker_compose_up_and_test
 }
 
 main "$@"
