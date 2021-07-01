@@ -9,13 +9,15 @@ echo "$(date) - Checking whether <$ELASTICSEARCH_URL> is ready..."
 i=0
 while ! is_ready; do
     i=$((i + 1))
+    sleep_interval=5
 
-    if [ "$i" -ge 30 ]; then
-        echo "$(date) - <$ELASTICSEARCH_URL> still not ready, giving up!"
+    if [ "$i" -ge 120 ]; then
+        waited=$((i * sleep_amount))
+        echo "$(date) - <$ELASTICSEARCH_URL> not ready after $waited seconds. Giving up!"
         exit 1
     fi
     echo "$(date) - waiting for <$ELASTICSEARCH_URL> to be ready."
-    sleep 2
+    sleep $sleep_interval
 done
 
 echo "$(date) - Done checking for <$ELASTICSEARCH_URL>."
