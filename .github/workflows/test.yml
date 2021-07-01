@@ -23,19 +23,11 @@ jobs:
     - uses: actions/setup-node@v2.2.0
       with:
         node-version: '12.x'
-
-    - uses: actions/cache@v2
-      with:
-        # npm cache files are stored in `~/.npm` on Linux/macOS
-        path: ~/.npm
-        key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.OS }}-node
-          ${{ runner.OS }}-
+        cache: 'npm'
 
     - run: npm ci
 
-    - name: check
+    - name: node check
       run: find . -name "*.js" -not -path "./node_modules/*" -exec node --check {} \;
 
     - run: npm run test
