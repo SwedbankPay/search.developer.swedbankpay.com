@@ -38,12 +38,13 @@ enable_expanded_output() {
 docker_compose_up_and_test() {
     local url='http://search:3000/?q=payment'
     { \
-        docker compose up & \
+        docker-compose up & \
         echo $! > .pid; \
     } | tee /dev/stderr | { \
         grep -m1 "Listening on 3000" \
         && grep -m1 "developer.swedbankpay.com exited with code 0" \
         && (curl --silent "$url" | grep -m1 '<span class=\"h3 mt-3 search-result-title\">After Payment</span>') \
+        && docker-compose down \
         && kill -9 "$(cat .pid)" \
         && rm .pid; \
     }
