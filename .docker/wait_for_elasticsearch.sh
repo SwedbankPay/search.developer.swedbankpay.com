@@ -12,7 +12,7 @@ while ! is_ready; do
     sleep_interval=5
 
     if [ "$i" -ge 120 ]; then
-        waited=$((i * sleep_amount))
+        waited=$((i * sleep_interval))
         echo "$(date) - <$ELASTICSEARCH_URL> not ready after $waited seconds. Giving up!"
         exit 1
     fi
