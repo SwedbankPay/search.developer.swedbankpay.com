@@ -50,15 +50,19 @@ docker_compose_up_and_test() {
     echo 'Starting Docker…'
     docker-compose up --detach
     echo 'Waiting for Developer Portal indexing to complete…'
-    (docker-compose logs --follow developer-portal &) | \
-        grep --max-count=1 "${grep_args[@]}" "developer.swedbankpay.com exited with code 0" && \
+    (docker-compose logs --follow developer-portal &) \
+        | tee developer-portal.log \
+        | grep --max-count=1 "${grep_args[@]}" "developer.swedbankpay.com exited with code 0" && \
     echo 'Developer portal indexing complete!' && \
     echo 'Waiting for the Search service to become available…' &&
-    (docker-compose logs --follow search &) | \
-        grep --max-count=1 "${grep_args[@]}" 'Listening on 3000' && \
+    (docker-compose logs --follow search &) \
+        | tee search.log \
+        | grep --max-count=1 "${grep_args[@]}" 'Listening on 3000' && \
     echo 'Search service available!' && \
     echo 'Performing search query…' && \
-    (curl "${curl_args[@]}" "$url" 2>&1 | tee search.html | grep --max-count=1 "${grep_args[@]}" '<span class=\"h3 mt-3 search-result-title\">After Payment</span>') && \
+    (curl "${curl_args[@]}" "$url" 2>&1 \
+        | tee search.html \
+        | grep --max-count=1 "${grep_args[@]}" '<span class=\"h3 mt-3 search-result-title\">After Payment</span>') && \
     echo 'Search query completed successfully.'
 
     exit_code=$?

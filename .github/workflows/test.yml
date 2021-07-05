@@ -45,8 +45,10 @@ jobs:
     - uses: actions/upload-artifact@v2
       if: always()
       with:
-        name: search.html
-        path: search.html
+        name: logs
+        path: |
+          *.log
+          search.html
 
     - name: Deploy to search.developer.stage.swedbankpay.com
       if: github.ref == 'refs/heads/develop'
