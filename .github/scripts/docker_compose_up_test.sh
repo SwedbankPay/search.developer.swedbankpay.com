@@ -37,22 +37,28 @@ enable_expanded_output() {
 
 docker_compose_up_and_test() {
     local url='http://localhost:3000/?q=payment'
-    local args=()
+    local curl_args=()
+    local grep_args=()
 
-    [[ ! $verbose ]] && args+=(--silent)
+    if [ $verbose ]; then
+     curl_args+=(--verbose)
+    else
+     curl_args+=(--silent)
+     grep_args+=(--silent)
+    fi
 
     echo 'Starting Docker…'
     docker-compose up --detach
     echo 'Waiting for Developer Portal indexing to complete…'
     (docker-compose logs --follow developer-portal &) | \
-        grep --max-count=1 "${args[@]}" "developer.swedbankpay.com exited with code 0" && \
+        grep --max-count=1 "${grep_args[@]}" "developer.swedbankpay.com exited with code 0" && \
     echo 'Developer portal indexing complete!' && \
     echo 'Waiting for the Search service to become available…' &&
     (docker-compose logs --follow search &) | \
-        grep --max-count=1 "${args[@]}" 'Listening on 3000' && \
+        grep --max-count=1 "${grep_args[@]}" 'Listening on 3000' && \
     echo 'Search service available!' && \
     echo 'Performing search query…' && \
-    (curl "${args[@]}" "$url" | grep --max-count=1 "${args[@]}" '<span class=\"h3 mt-3 search-result-title\">After Payment</span>') && \
+    (curl "${curl_args[@]}" "$url" | grep --max-count=1 "${grep_args[@]}" '<span class=\"h3 mt-3 search-result-title\">After Payment</span>') && \
     echo 'Search query completed successfully.'
 
     exit_code=$?
