@@ -42,6 +42,12 @@ jobs:
     - name: docker compose up
       run: .github/scripts/docker_compose_up_test.sh --verbose
 
+    - uses: actions/upload-artifact@v2
+      if: always()
+      with:
+        name: search.html
+        path: search.html
+
     - name: Deploy to search.developer.stage.swedbankpay.com
       if: github.ref == 'refs/heads/develop'
       uses: azure/webapps-deploy@v2
