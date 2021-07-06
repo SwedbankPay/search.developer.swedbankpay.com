@@ -7,11 +7,11 @@ on: [push, pull_request]
 jobs:
   slack:
     runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
     outputs:
       message-id: ${{ steps.slack.outputs.message-id }}
     steps:
     - name: 'Notify Slack: Started'
-      if: github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main')
       uses: someimportantcompany/github-actions-slack-message@v1
       id: slack
       with:
@@ -46,6 +46,7 @@ jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2.3.4
     - name: docker compose up
       run: .github/scripts/docker_compose_up_test.sh
     - uses: actions/upload-artifact@v2
