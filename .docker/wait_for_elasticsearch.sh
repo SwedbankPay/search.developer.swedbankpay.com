@@ -63,7 +63,7 @@ start() {
     echo "$(date) - Running the Developer Portal in $JEKYLL_ENV."
 
     if [ $verbose ]; then
-        pwd
+        echo "The contents of <$(pwd)> is:"
         find .
     fi
 
