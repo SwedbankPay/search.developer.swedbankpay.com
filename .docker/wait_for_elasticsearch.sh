@@ -23,4 +23,7 @@ done
 echo "$(date) - Done checking for <$ELASTICSEARCH_URL>."
 echo "$(date) - Running the Developer Portal in $JEKYLL_ENV."
 
+pwd
+find .
+
 exec /var/jekyll/entrypoint/sh/entrypoint.sh build
