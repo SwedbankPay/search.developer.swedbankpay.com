@@ -27,7 +27,7 @@ parse_args() {
     done
 }
 
-# echo expanded commands as they are executed (for debugging)
+# Echo expanded commands as they are executed (for debugging)
 enable_expanded_output() {
     if [ $verbose ]; then
         set -o xtrace
