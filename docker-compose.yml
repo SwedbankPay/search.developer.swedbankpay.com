@@ -1,26 +1,41 @@
 version: '3.7'
 
 services:
-  node:
-    image: node:14
-    container_name: nodejs
+  search:
+    image: node:16
+    container_name: search.developer.swedbankpay.com
     restart: unless-stopped
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
       - ELASTICSEARCH_USERNAME=elasticsearch
+      - PORT=3000
     ports: [3000:3000]
     volumes:
       - .:/home/node/app
-    command: npm run watch
+    command: sh -c "npm install && npm run watch"
     working_dir: /home/node/app
+    depends_on: [elasticsearch]
+
+  developer-portal:
+    container_name: developer.swedbankpay.com
+    build:
+      context: .docker
+      dockerfile: developer-portal.dockerfile
+    environment:
+      - DEBUG=1
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=elasticsearch
+      - JEKYLL_ENV=stage
     depends_on: [elasticsearch]
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.4.0
     container_name: elasticsearch
+    restart: unless-stopped
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
+      - logger.level=WARN
     ulimits:
       memlock:
         soft: -1
@@ -41,6 +56,7 @@ services:
     image: docker.elastic.co/kibana/kibana:7.4.0
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - logger.level=WARN
     ports: [5601:5601]
     depends_on: [elasticsearch]
 
