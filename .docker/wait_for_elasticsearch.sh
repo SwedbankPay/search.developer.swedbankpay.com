@@ -67,7 +67,9 @@ start() {
         find .
     fi
 
-    exec /var/jekyll/entrypoint/sh/entrypoint.sh build
+    cp -r "${JEKYLL_SITE_DIR}/*" "${JEKYLL_DATA_DIR}/"
+
+    exec "${JEKYLL_VAR_DIR}/entrypoint/sh/entrypoint.sh" build
 }
 
 
