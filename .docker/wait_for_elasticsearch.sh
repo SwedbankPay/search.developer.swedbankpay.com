@@ -62,12 +62,12 @@ wait() {
 start() {
     echo "$(date) - Running the Developer Portal in $JEKYLL_ENV."
 
-    if [ $verbose ]; then
-        echo "The contents of <$(pwd)> is:"
-        find .
-    fi
-
-    cp -r "${JEKYLL_SITE_DIR}/*" "${JEKYLL_DATA_DIR}/"
+    git clone \
+        https://github.com/SwedbankPay/developer.swedbankpay.com.git \
+        --depth 1 \
+        --branch develop \
+        --single-branch \
+        "$JEKYLL_DATA_DIR"
 
     exec "${JEKYLL_VAR_DIR}/entrypoint/sh/entrypoint.sh" build
 }
