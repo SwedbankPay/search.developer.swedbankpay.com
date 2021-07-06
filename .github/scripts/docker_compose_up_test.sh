@@ -48,7 +48,6 @@ docker_compose_up_and_test() {
     fi
 
     echo 'Starting Docker…'
-    docker-compose build --no-cache
     docker-compose up --detach
     echo 'Waiting for Developer Portal indexing to complete…'
     (docker-compose logs --follow developer-portal \
