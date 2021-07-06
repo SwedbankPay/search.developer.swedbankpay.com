@@ -50,13 +50,13 @@ docker_compose_up_and_test() {
     echo 'Starting Docker…'
     docker-compose up --detach
     echo 'Waiting for Developer Portal indexing to complete…'
-    (docker-compose logs --follow developer-portal &) \
-        | tee developer-portal.log \
+    (docker-compose logs --follow developer-portal \
+        | tee developer-portal.log &) \
         | grep --max-count=1 "${grep_args[@]}" "developer.swedbankpay.com exited with code 0" && \
     echo 'Developer portal indexing complete!' && \
     echo 'Waiting for the Search service to become available…' &&
-    (docker-compose logs --follow search &) \
-        | tee search.log \
+    (docker-compose logs --follow search \
+        | tee search.log &) \
         | grep --max-count=1 "${grep_args[@]}" 'Listening on 3000' && \
     echo 'Search service available!' && \
     echo 'Performing search query…' && \
