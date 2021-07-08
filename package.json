@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "jest",
-    "watch": "npm-watch"
+    "watch": "npm-watch",
+    "check": "find . -name '*.js' -not -path './node_modules/*' -exec node --check {} \\;"
   },
   "watch": {
     "start": {

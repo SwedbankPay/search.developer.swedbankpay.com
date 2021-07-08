@@ -39,8 +39,7 @@ jobs:
         node-version: '16.x'
         cache: npm
     - run: npm ci
-    - name: node check
-      run: find . -name "*.js" -not -path "./node_modules/*" -exec node --check {} \;
+    - run: npm run check
     - run: npm run test
 
   docker:
