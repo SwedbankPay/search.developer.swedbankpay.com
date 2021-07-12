@@ -1,6 +1,6 @@
-const React = require('react');
+import React from 'react';
 
-module.exports = (props) => {
+export default (props) => {
   const isIndex = props.query == null;
   let searchHeaderTitle;
   let resultsLead = '';

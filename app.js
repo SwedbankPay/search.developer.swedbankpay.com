@@ -1,20 +1,20 @@
-var createError = require('http-errors')
-var express = require('express')
-var fetch = require('node-fetch')
-var path = require('path')
-var cookieParser = require('cookie-parser')
-var logger = require('morgan')
-var compression = require('compression')
-var helmet = require('helmet')
-var searchRouter = require('./routes/search.js')
+import createError from 'http-errors';
+import express from 'express';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import compression from 'compression';
+import helmet from 'helmet';
+import { createEngine } from 'express-react-views';
+import { search } from './routes/search.js';
 
-var app = express();
-var __dirname = path.resolve();
+const app = express();
+const __dirname = path.resolve();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jsx');
-app.engine('jsx', require('express-react-views').createEngine());
+app.engine('jsx', createEngine());
 
 app.use(helmet());
 app.use(
@@ -34,7 +34,7 @@ app.use(express.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', searchRouter.search);
+app.use('/', search);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -53,4 +53,4 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+export default app;

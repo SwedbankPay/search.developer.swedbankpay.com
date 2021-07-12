@@ -1,8 +1,8 @@
-require("regenerator-runtime");
-const Express = require('express');
-const ElasticSearch = require('@elastic/elasticsearch');
-const fetch = require('node-fetch')
-const asyncHandler = require('express-async-handler');
+import 'regenerator-runtime';
+import 'setimmediate';
+import { Client } from '@elastic/elasticsearch';
+import fetch from 'node-fetch';
+import asyncHandler from 'express-async-handler';
 const baseUrl = process.env.ENV === 'stage'
     ? 'https://developer.stage.swedbankpay.com'
     : 'https://developer.swedbankpay.com';
@@ -12,7 +12,7 @@ function getElasticSearchClient() {
     const elasticUsername = process.env.ELASTICSEARCH_USERNAME || 'none';
     const elasticPassword = process.env.ELASTICSEARCH_PASSWORD || 'none';
 
-    return new ElasticSearch.Client({
+    return new Client({
         node: elasticHosts,
         auth: {
           username: elasticUsername,
@@ -54,7 +54,7 @@ function mapHit(hit) {
     };
 }
 
-exports.search = asyncHandler(async (req, res, next) => {
+export const search = asyncHandler(async (req, res, next) => {
     const searchState = await hydrateSearchState(req);
 
     if (searchState.query != null) {

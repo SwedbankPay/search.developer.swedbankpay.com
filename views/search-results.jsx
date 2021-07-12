@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react';
 import SearchForm from './search-form';
 
 function hitText(hit) {
@@ -52,7 +52,7 @@ function renderHit(hit, index) {
   );
 }
 
-module.exports = (props) => {
+export default (props) => {
   // const { sidebar, ...x} = props;
   // console.log('Search results:', x);
 

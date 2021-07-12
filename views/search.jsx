@@ -1,11 +1,11 @@
-const React = require('react');
-const DefaultLayout = require('./layouts/default');
+import React from 'react';
+import DefaultLayout from './layouts/default';
 import Pagination from './pagination'
 import Sidebar from './sidebar'
 import SearchHeader from './search-header';
 import SearchResults from './search-results';
 
-module.exports = (props) => {
+export default (props) => {
   return (
     <DefaultLayout title={props.query}>
       <Sidebar sidebar={props.sidebar} query={props.query} />
