@@ -6,7 +6,7 @@
 
 import app from './app.js';
 import debug from 'debug';
-import { createServer } from 'http';
+import http from 'http';
 
 const log = debug('elk-node-search-proxy:server');
 
@@ -20,7 +20,7 @@ const port = normalizePort(process.env.PORT || '3000');
  * Create HTTP server.
  */
 
-const server = createServer(app);
+const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
