@@ -38,7 +38,17 @@ function buildBreadcrumbs(hit) {
     .join(' › ');
 }
 
+function hitTitle(hit) {
+  if (hit.title == hit.leadTitle || !hit.leadTitle) {
+    return hit.title;
+  }
+
+  return `${hit.leadTitle} – ${hit.title}`;
+}
+
 function renderHit(hit, index) {
+  const text = hitText(hit);
+  const title = hitTitle(hit);
   const breadcrumbs = buildBreadcrumbs(hit);
   const extensionlessUrl = hit.url.replace('.html', '');
 
@@ -46,8 +56,8 @@ function renderHit(hit, index) {
     <a key={index} href={extensionlessUrl} className="cards cards-primary search-result">
       <div className="cards-content">
         <small className="breadcrumbs">{breadcrumbs}</small>
-        <span className="h3 mt-3 search-result-title">{hit.title}</span>
-        <p className="mt-0 search-result-text" dangerouslySetInnerHTML={{ __html: hitText(hit) }}></p>
+        <span className="h3 mt-3 search-result-title">{title}</span>
+        <p className="mt-0 search-result-text" dangerouslySetInnerHTML={{ __html: text }} />
       </div>
       <i className="material-icons">arrow_forward</i>
     </a>

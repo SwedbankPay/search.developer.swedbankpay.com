@@ -21,6 +21,7 @@ function mockElasticsearch(hitme) {
       {
         _source: {
           title: "I am hit number two",
+          lead_title: "Lead 2",
           url: "/hits/2.html",
         },
         highlight: {
@@ -76,7 +77,7 @@ describe("Search", () => {
       expect(searchResultBreadcrumbs.first().text()).toEqual("hits › 1")
 
       expect(searchResults.last().attr('href')).toEqual('https://developer.swedbankpay.com/hits/2');
-      expect(searchResultTitles.last().text()).toEqual("I am hit number two")
+      expect(searchResultTitles.last().text()).toEqual("Lead 2 – I am hit number two")
       expect(searchResultTexts.last().text()).toEqual("Highlighted text for hit number two")
       expect(searchResultBreadcrumbs.last().text()).toEqual("hits › 2")
     });

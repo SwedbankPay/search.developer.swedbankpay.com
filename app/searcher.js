@@ -22,6 +22,8 @@ function mapHit(hit) {
 
   return {
     title: hit._source.title,
+    leadTitle: hit._source.lead_title,
+    description: hit._source.description,
     url: url.href,
     highlight: hit.highlight
   };
@@ -41,7 +43,7 @@ async function search(queryState) {
       size: queryState.size,
       query: {
         query_string: {
-          fields: ['title^10', 'text'],
+          fields: ['title^10', 'lead_title^5', 'text'],
           query: queryState.elasticQuery,
           default_operator: 'AND'
         }
@@ -57,6 +59,8 @@ async function search(queryState) {
       }
     }
   });
+
+  // console.log(body.hits.hits);
 
   return {
     total: body.hits.total.value,
