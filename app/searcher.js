@@ -41,9 +41,9 @@ async function search(queryState) {
       size: queryState.size,
       query: {
         query_string: {
-          fields: ["text", "title"],
+          fields: ['title^10', 'text'],
           query: queryState.elasticQuery,
-          default_operator: "AND"
+          default_operator: 'AND'
         }
       },
       highlight: {
@@ -53,7 +53,7 @@ async function search(queryState) {
             number_of_fragments: 3
           }
         },
-        tags_schema: "styled"
+        tags_schema: 'styled'
       }
     }
   });
