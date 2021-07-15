@@ -20,7 +20,7 @@ export default (props) => {
             <div className="search-results">
               <SearchResults queryState={props.queryState} />
             </div>
-            <Pagination {...props} />
+            <Pagination queryState={props.queryState} />
           </div>
         </div>
       </main>

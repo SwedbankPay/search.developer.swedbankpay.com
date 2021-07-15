@@ -60,8 +60,6 @@ async function search(queryState) {
     }
   });
 
-  // console.log(body.hits.hits);
-
   return {
     total: body.hits.total.value,
     hits: body.hits.hits.map(mapHit)

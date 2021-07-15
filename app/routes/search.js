@@ -10,5 +10,8 @@ export const search = asyncHandler(async (req, res) => {
   const sidebar = await Sidebar.getSidebar(queryState.query);
   queryState.results = await Searcher.search(queryState);
 
+  // const { totalPages, prevPage, nextPage, prevUrl, nextUrl } = queryState;
+  // console.log({ queryState, totalPages, prevPage, nextPage, prevUrl, nextUrl });
+
   res.render('search', { queryState, sidebar });
 });
