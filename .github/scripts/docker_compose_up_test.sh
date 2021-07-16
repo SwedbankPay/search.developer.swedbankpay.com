@@ -62,7 +62,7 @@ docker_compose_up_and_test() {
     echo 'Performing search query…' && \
     (curl "${curl_args[@]}" "$url" 2>&1 \
         | tee search.html \
-        | grep --max-count=1 "${grep_args[@]}" '<span class=\"h3 mt-3 search-result-title\">After Payment</span>') && \
+        | grep --max-count=1 "${grep_args[@]}" 'search-result-title[^<]*After Payment') && \
     echo 'Search query completed successfully.'
 
     exit_code=$?

@@ -1,35 +1,34 @@
-var React = require('react');
+import React from 'react';
 
-module.exports = (props) => {
-  if (props.query == null) {
+
+function btn(additionalClassName) {
+  return `btn btn-primary btn-sm m-1 ${additionalClassName}`.trim();
+}
+
+export default (props) => {
+  const q = props.queryState;
+
+  if (q == null) {
     return null;
   }
 
-  const { total, current_page, size, originalUrl } = props
-  const total_pages = Math.ceil(total / size)
-  const url = originalUrl
-    ? originalUrl.includes("page=")
-      ? originalUrl.slice(0, -1)
-      : originalUrl + '&page='
-    : ''
+  const prevDisabledCN = q.prevPage == null ? 'disabled' : '';
+  const nextDisabledCN = q.nextPage == null ? 'disabled' : '';
+  const pages = [];
 
-  const previousPage = current_page != 0 ? url + (Number(current_page) - 1) : ''
-  const nextPage = current_page != total_pages - 1 ? url + (Number(current_page) + 1) : ''
-
-  const pagination = []
-
-  for (let i = 0; i < total_pages; i++) (
-    pagination.push(<a href={url + i} className={`btn btn-primary btn-sm m-1
-            ${Number(current_page) === i
-        ? 'current-page' : ''}`}>
-      {i + 1}</a>)
-  )
+  // TODO: We need to figure out how these fill pages should work. See DX-1580
+  // for details.
+  /*for (let i = 1; i = totalPages; i++) {
+    const pageCN = page === i ? 'current-page' : '';
+    const pageUrl = setPage(url, i);
+    pages.push(<a key={`page-${i}`} href={pageUrl} className={btn(pageCN)}>{i + 1}</a>);
+  }*/
 
   return (
     <div className="search-pagination">
-      <a href={previousPage} className={`btn btn-primary btn-sm m-1 ${current_page == 0 ? 'disabled' : ''}`}>Prev</a>
-      {pagination}
-      <a href={nextPage} className={`btn btn-primary btn-sm m-1 ${current_page == total_pages - 1 ? 'disabled' : ''}`}>Next</a>
+      <a key="prev" rel="prev" href={q.prevUrl} className={btn(prevDisabledCN)}>Prev</a>
+      {pages}
+      <a key="next" rel="next" href={q.nextUrl} className={btn(nextDisabledCN)}>Next</a>
     </div>
   );
 };
