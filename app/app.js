@@ -6,7 +6,7 @@ import logger from 'morgan';
 import compression from 'compression';
 import helmet from 'helmet';
 import { createEngine } from 'express-react-views';
-import { search } from './routes/search.js';
+import { search } from './search-router.js';
 
 const app = express();
 
