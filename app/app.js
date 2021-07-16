@@ -5,14 +5,14 @@ import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import compression from 'compression';
 import helmet from 'helmet';
-import { createEngine } from 'express-react-views';
+import ExpressReactViews from 'express-react-views';
 import SearchRouter from './search-router.js';
 
 const app = express();
 
 // view engine setup
 app.set('view engine', 'jsx');
-app.engine('jsx', createEngine());
+app.engine('jsx', ExpressReactViews.createEngine());
 
 app.use(helmet());
 app.use(
