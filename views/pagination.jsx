@@ -16,6 +16,8 @@ export default (props) => {
   const nextDisabledCN = q.nextPage == null ? 'disabled' : '';
   const pages = [];
 
+  // TODO: We need to figure out how these fill pages should work. See DX-1580
+  // for details.
   /*for (let i = 1; i = totalPages; i++) {
     const pageCN = page === i ? 'current-page' : '';
     const pageUrl = setPage(url, i);
