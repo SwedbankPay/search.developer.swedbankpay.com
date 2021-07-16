@@ -6,7 +6,7 @@ import logger from 'morgan';
 import compression from 'compression';
 import helmet from 'helmet';
 import { createEngine } from 'express-react-views';
-import { search } from './search-router.js';
+import SearchRouter from './search-router.js';
 
 const app = express();
 
@@ -32,7 +32,7 @@ app.use(express.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(path.resolve(), 'public')));
-app.use('/', search);
+app.use('/', SearchRouter.search);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

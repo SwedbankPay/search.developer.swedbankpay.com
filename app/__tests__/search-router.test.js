@@ -1,6 +1,6 @@
 import nock from 'nock';
 import request from 'supertest';
-import app from '../../app.js';
+import app from '../app.js';
 import $ from 'jquery';
 import { convert } from 'number-words';
 
@@ -84,7 +84,7 @@ describe('Search', () => {
   test('page 1', () => {
     mockElasticsearch(true);
 
-    return request(app).get('/?q=abc&').then(response => {
+    return request(app).get('/?q=abc').then(response => {
       expect(response.statusCode).toBe(200);
 
       document.body.innerHTML = response.text;
