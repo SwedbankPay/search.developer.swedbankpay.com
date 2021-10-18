@@ -28,7 +28,7 @@
     "cookie-parser": "~1.4.4",
     "debug": "~4.3.2",
     "express": "~4.17.1",
-    "express-async-handler": "^1.1.4",
+    "express-async-handler": "^1.2.0",
     "express-react-views": "^0.11.0",
     "helmet": "^4.5.0",
     "http-errors": "^1.6.3",
