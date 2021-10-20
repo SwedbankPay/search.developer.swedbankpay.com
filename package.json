@@ -42,7 +42,7 @@
     "jest": "^27.3.0",
     "jquery": "^3.6.0",
     "nock": "^13.1.4",
-    "nodemon": "^2.0.13",
+    "nodemon": "^2.0.14",
     "npm-watch": "^0.11.0",
     "number-words": "^1.1.1",
     "setimmediate": "^1.0.5",
