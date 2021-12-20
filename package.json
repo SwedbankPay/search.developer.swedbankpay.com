@@ -31,7 +31,7 @@
     "express-async-handler": "^1.2.0",
     "express-react-views": "^0.11.0",
     "helmet": "^4.5.0",
-    "http-errors": "^1.8.1",
+    "http-errors": "^2.0.0",
     "morgan": "~1.10.0",
     "node-fetch": "^2.6.1",
     "react": "^17.0.1",
