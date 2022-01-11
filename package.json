@@ -47,6 +47,6 @@
     "number-words": "^1.1.1",
     "setimmediate": "^1.0.5",
     "superagent": "^6.1.0",
-    "supertest": "^6.1.6"
+    "supertest": "^6.2.0"
   }
 }
