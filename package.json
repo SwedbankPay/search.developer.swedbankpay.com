@@ -23,7 +23,7 @@
     "testEnvironment": "jsdom"
   },
   "dependencies": {
-    "@elastic/elasticsearch": "^7.11.0",
+    "@elastic/elasticsearch": "^8.4.0",
     "compression": "^1.7.4",
     "cookie-parser": "~1.4.6",
     "debug": "~4.3.3",
