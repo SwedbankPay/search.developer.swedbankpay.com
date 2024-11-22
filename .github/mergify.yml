@@ -1,8 +1,11 @@
 queue_rules:
   - name: default
-    conditions:
+    queue_conditions:
+      - author~=^dependabot(|-preview)\[bot\]$
+    merge_conditions:
       # Conditions to get out of the queue (= merged)
       - check-success=build
+    merge_method: merge
 
 pull_request_rules:
   - name: Automatic approve on dependabot PR
@@ -12,14 +15,6 @@ pull_request_rules:
       review:
         type: APPROVE
 
-  - name: Automatic merge on approval
-    conditions:
-      - author~=^dependabot(|-preview)\[bot\]$
-    actions:
-      queue:
-        method: merge
-        name: default
-
   - name: Thank contributor
     conditions:
       - merged
@@ -27,3 +22,7 @@ pull_request_rules:
     actions:
       comment:
         message: "Thank you @{{author}} for your contribution!"
+  - name: refactored queue action rule
+    conditions: []
+    actions:
+      queue:
